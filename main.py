@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox as mb
 import sqlite3
 
 window=Tk()
@@ -11,12 +12,10 @@ def login():
 		cur.execute("SELECT * FROM loginDet WHERE username=? AND password=?",(e1.get(),e2.get()))
 		row=cur.fetchall()
 		conn.close()
-		print(row)
-		if row!=[]:
-			user_name=row[0][1]
-			l3.config(text="user name found with name: "+user_name)
+		if(len(row)==0):
+			mb.showinfo("Error","Invalid username or password")
 		else:
-			l3.config(text="user not found ")
+			mb.showinfo("Success","Login Successful")
 
 
 
@@ -51,10 +50,10 @@ def signup():
 	def signup_database():
 		conn=sqlite3.connect("login.db")
 		cur=conn.cursor()
-		cur.execute("CREATE TABLE IF NOT EXISTS loginDet(id INTEGER PRIMARY KEY AUTOINCREMENT, petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text, password text)")
-		cur.execute("INSERT INTO test Values(?,?,?,?,?,?,?,?)",(e4.get(),e5.get(),e6.get(),e7.get(),e8.get(),e2.get(),e1.get(),e3.get()))
-		l4=Label(signup_window,text="account created",font="times 15")
-		l4.grid(row=6,column=2)
+		cur.execute("CREATE TABLE IF NOT EXISTS loginDet(petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text primary key, password text)")
+		cur.execute("INSERT INTO loginDet Values(?,?,?,?,?,?,?,?)",(e4.get(),e5.get(),e6.get(),e7.get(),e8.get(),e2.get(),e1.get(),e3.get()))
+		l4=Label(signup_window,text="Account created",font="times 15")
+		l4.grid(row=11,column=2)
 		conn.commit()
 		conn.close()
 
