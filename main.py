@@ -1,133 +1,369 @@
 from tkinter import *
-from tkinter import messagebox as mb
+from PIL import ImageTk
+from tkinter import messagebox
 import sqlite3
 
-window=Tk()
-window.geometry("300x150")
+class Login(object):
+    def __init__(self,root):
 
-def login():
-	def login_database():
-		conn=sqlite3.connect("login.db")
-		cur=conn.cursor()
-		cur.execute("SELECT * FROM loginDet WHERE username=? AND password=?",(e1.get(),e2.get()))
-		row=cur.fetchall()
-		conn.close()
-		if(len(row)==0):
-			mb.showinfo("Error","Invalid username or password")
-		else:
-			mb.showinfo("Success","Login Successful")
+        self.root=root
 
+        self.root.title("Petrol Bunk Accounting System")
 
+        self.root.geometry("1366x700+0+0")
+        
 
-	window.destroy()
-	login_window=Tk()
-	login_window.geometry("300x150")
-	l1=Label(login_window,text="Username",font="arial 15")
-	l1.grid(row=1,column=1)
-	l2=Label(login_window,text="Password",font="arial 15")
-	l2.grid(row=2,column=1)
-	l3=Label(login_window,font="times 20")
-	l3.grid(row=5,column=2)
+        self.root.resizable(False,False)
 
-	email_text=StringVar()
-	e1=Entry(login_window,textvariable=email_text,width=30)
-	e1.grid(row=1,column=2)
-	password_text=StringVar()
-	e2=Entry(login_window,textvariable=password_text,width=30)
-	e2.grid(row=2,column=2)
+        self.loginform()
+    
+    def loginform(self):
 
+        Frame_login=Frame(self.root,bg="white")
 
-	b1=Button(login_window,text="login",width=20,command=login_database)
-	b1.grid(row=4,column=2)
-	login_window.mainloop()
+        Frame_login.place(x=0,y=0,height=700,width=1366)
+
+      
+
+        self.img=ImageTk.PhotoImage(file="D:\\VS PYTHON\\Cruder Accounter\\bg.jpg")
+
+        img=Label(Frame_login,image=self.img).place(x=0,y=0,width=1366,height=700)
+
+      
+
+        frame_input=Frame(self.root,bg='white')
+
+        frame_input.place(x=500,y=130,height=450,width=350)
 
 
 
+        label1=Label(frame_input,text="Login Here",font=('impact',32,'bold'),fg="black",bg='white')
 
-def signup():
-
-
-	def signup_database():
-		conn=sqlite3.connect("login.db")
-		cur=conn.cursor()
-		cur.execute("CREATE TABLE IF NOT EXISTS loginDet(petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text primary key, password text)")
-		cur.execute("INSERT INTO loginDet Values(?,?,?,?,?,?,?,?)",(e4.get(),e5.get(),e6.get(),e7.get(),e8.get(),e2.get(),e1.get(),e3.get()))
-		l4=Label(signup_window,text="Account created",font="times 15")
-		l4.grid(row=11,column=2)
-		conn.commit()
-		conn.close()
+        label1.place(x=75,y=20)
 
 
 
+        label2=Label(frame_input,text="Username",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
+        label2.place(x=30,y=95)
 
-	window.destroy()
-	signup_window=Tk()
-	signup_window.geometry("500x350")
-	l1=Label(signup_window,text="Username",font="arial 15")
-	l1.grid(row=1,column=1)
-	l2=Label(signup_window,text="Email",font="arial 15")
-	l2.grid(row=2,column=1)
-	l3=Label(signup_window,text="Password",font="arial 15")
-	l3.grid(row=3,column=1)
-	l4=Label(signup_window,text="Petrol Pump Name",font="arial 15")
-	l4.grid(row=4,column=1)
-	l5=Label(signup_window,text="Company Name",font="arial 15")
-	l5.grid(row=5,column=1)
-	l6=Label(signup_window,text="Owner Name",font="arial 15")
-	l6.grid(row=6,column=1)
-	l7=Label(signup_window,text="City",font="arial 15")
-	l7.grid(row=7,column=1)
-	l8=Label(signup_window,text="No of Nozzles",font="arial 15")
-	l8.grid(row=8,column=1)
-	l9=Label(signup_window,text=" ",font="arial 15")
-	l9.grid(row=9,column=1,columnspan=2)
+        self.email_txt=Entry(frame_input,font=("times new roman",15,"bold"),bg='lightgray')
 
-	user_name=StringVar()
-	e1=Entry(signup_window,textvariable=user_name,width=30)
-	e1.grid(row=1,column=2)
-	email_text=StringVar()
-	e2=Entry(signup_window,textvariable=email_text,width=30)
-	e2.grid(row=2,column=2)
-	password_text=StringVar()
-	e3=Entry(signup_window,textvariable=password_text,width=30)
-	e3.grid(row=3,column=2)
-	petrol_pump_name=StringVar()
-	e4=Entry(signup_window,textvariable=petrol_pump_name,width=30)
-	e4.grid(row=4,column=2)
-	company_name=StringVar()
-	e5=Entry(signup_window,textvariable=company_name,width=30)
-	e5.grid(row=5,column=2)
-	owner_name=StringVar()
-	e6=Entry(signup_window,textvariable=owner_name,width=30)
-	e6.grid(row=6,column=2)
-	address=StringVar()
-	e7=Entry(signup_window,textvariable=address,width=30)
-	e7.grid(row=7,column=2)
-	no_of_nozzles=IntVar()
-	e8=Entry(signup_window,textvariable=no_of_nozzles,width=30)
-	e8.grid(row=8,column=2)
+        self.email_txt.place(x=30,y=145,width=270,height=35)
 
-	b1=Button(signup_window,text="Sign up",width=20,command=signup_database)
-	b1.grid(row=10,column=2)
+      
+
+        label3=Label(frame_input,text="Password",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label3.place(x=30,y=195)
+
+        self.password=Entry(frame_input,font=("times new roman",15,"bold"),bg='lightgray')
+
+        self.password.place(x=30,y=245,width=270,height=35)
+
+   
+
+        btn1=Button(frame_input,text="forgot password?",cursor='hand2',
+
+                  font=('calibri',10),bg='white',fg='black',bd=0)
+
+        btn1.place(x=125,y=305)
 
 
 
+        btn2=Button(frame_input,text="Login",command=self.login,cursor="hand2",
+
+                  font=("times new roman",15),fg="white",bg="orangered",
+
+                  bd=0,width=15,height=1)
+
+        btn2.place(x=90,y=340)
+
+        
+
+        btn3=Button(frame_input,command=self.Register,text="Not Registered?register"
+
+                  ,cursor="hand2",font=("calibri",10),bg='white',fg="black",bd=0)
+
+        btn3.place(x=110,y=390)
+
+
+
+    def login(self):
+
+        if self.email_txt.get()=="" or self.password.get()=="":
+
+            messagebox.showerror("Error","All fields are required",parent=self.root)
+
+        else:
+            conn=sqlite3.connect("login.db")
+            curr=conn.cursor()
+            curr.execute("SELECT * FROM loginDet WHERE username=? AND password=?",(self.email_txt.get(),self.password.get()))
+
+            row=curr.fetchone()
+
+            if row==None:
+
+                messagebox.showerror('Error','Invalid Username And Password',parent=self.root)
+
+                self.loginclear()
+
+                self.email_txt.focus()
+
+            else:
+
+                self.appscreen()
+
+                conn.close()
+            
+
+    def Register(self):
+
+
+
+        Frame_login1=Frame(self.root,bg="white")
+
+        Frame_login1.place(x=0,y=0,height=1000,width=2000)
+
+      
+
+        self.img=ImageTk.PhotoImage(file="D:\\VS PYTHON\\Cruder Accounter\\bg.jpg")
+
+        img=Label(Frame_login1,image=self.img).place(x=0,y=0,width=1366,height=700)
+
+      
+
+        frame_input2=Frame(self.root,bg='white')
+
+        frame_input2.place(x=210,y=130,height=515,width=915)
+
+
+
+        label1=Label(frame_input2,text="Register Here",font=('impact',32,'bold'),fg="black",bg='white')
+
+        label1.place(x=45,y=20)
+
+
+
+        label2=Label(frame_input2,text="Username",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label2.place(x=30,y=95)
+
+        self.entry=Entry(frame_input2,font=("times new roman",15,"bold"),bg='lightgray')
+
+        self.entry.place(x=30,y=145,width=270,height=35)
+
+      
+
+        label3=Label(frame_input2,text="Password",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label3.place(x=30,y=195)
+
+        self.entry2=Entry(frame_input2,font=("times new roman",15,"bold"),
+
+                        bg='lightgray')
+
+        self.entry2.place(x=30,y=245,width=270,height=35)
+
+
+
+        label4=Label(frame_input2,text="Email-id",font=("Goudy old style",20,"bold"),
+
+                   fg='orangered',bg='white')
+
+        label4.place(x=330,y=95)
+
+        self.entry3=Entry(frame_input2,font=("times new roman",15,"bold"),
+
+                       bg='lightgray')
+
+        self.entry3.place(x=330,y=145,width=270,height=35)
+
+
+
+        label5=Label(frame_input2,text="Confirm Password",
+
+                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label5.place(x=330,y=195)
+
+        self.entry4=Entry(frame_input2,font=("times new roman",15,"bold"),
+
+                       bg='lightgray')
+
+        self.entry4.place(x=330,y=245,width=270,height=35)
+        label6=Label(frame_input2,text="Company Name",
+
+                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label6.place(x=630,y=95)
+
+        self.entry5=Entry(frame_input2,font=("times new roman",15,"bold"),
+
+                       bg='lightgray')
+
+        self.entry5.place(x=630,y=145,width=270,height=35)
+        label7=Label(frame_input2,text="Petrol Pump Name",
+
+                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label7.place(x=630,y=195)
+
+        self.entry6=Entry(frame_input2,font=("times new roman",15,"bold"),
+
+                       bg='lightgray')
+
+        self.entry6.place(x=630,y=245,width=270,height=35)
+        label8=Label(frame_input2,text="Owner Name",
+
+                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label8.place(x=30,y=295)
+
+        self.entry7=Entry(frame_input2,font=("times new roman",15,"bold"),
+
+                       bg='lightgray')
+
+        self.entry7.place(x=30,y=345,width=270,height=35)
+        label9=Label(frame_input2,text="City",
+
+                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label9.place(x=330,y=295)
+
+        self.entry8=Entry(frame_input2,font=("times new roman",15,"bold"),
+
+                       bg='lightgray')
+
+        self.entry8.place(x=330,y=345,width=270,height=35)
+        no_of_nozzles=IntVar()
+        label10=Label(frame_input2,text="No of Nozzles",
+
+                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+
+        label10.place(x=630,y=295)
+
+        self.entry9=Entry(frame_input2,textvariable=no_of_nozzles,font=("times new roman",15,"bold"),
+
+                       bg='lightgray')
+
+        self.entry9.place(x=630,y=345,width=270,height=35)
+
+
+
+        btn2=Button(frame_input2,command=self.register,text="Register"
+
+                  ,cursor="hand2",font=("times new roman",15),fg="white",
+
+                  bg="orangered",bd=0,width=15,height=1)
+
+        btn2.place(x=390,y=430)
+
+        
+
+        btn3=Button(frame_input2,command=self.loginform,
+
+                  text="Already Registered?Login",cursor="hand2",
+
+                  font=("calibri",10),bg='white',fg="black",bd=0)
+
+        btn3.place(x=400,y=470)
 
 
 
 
-l1=Label(window,text="Welcome!",font="arial 20")
-l1.grid(row=1,column=2,columnspan=2)
 
-l2=Label(window,text=" ",font="times 20")
-l2.grid(row=2,column=2,columnspan=2)
+    def register(self):
 
-b1=Button(window,text="Login",width=20,command=login)
-b1.grid(row=3,column=2)
+        if self.entry.get()==""or self.entry2.get()==""or self.entry3.get()==""or self.entry4.get()=="" or self.entry5.get()=="" or self.entry6.get()=="" or self.entry7.get()=="" or self.entry8.get()=="" or self.entry9.get()=="":
 
-b2=Button(window,text="Signup",width=20,command=signup)
-b2.grid(row=3,column=3)
+            messagebox.showerror("Error","All Fields Are Required",parent=self.root)
+
+        elif self.entry2.get()!=self.entry4.get():
+
+            messagebox.showerror("Error","Password and Confirm Password Should Be Same"
+
+                              ,parent=self.root)
+
+        else:
+
+            conn=sqlite3.connect("login.db")
+
+            cur=conn.cursor()
+            cur.execute("CREATE TABLE IF NOT EXISTS loginDet(petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text primary key, password text)")
+            
+
+            cur.execute("select * from loginDet where username=?",(self.entry.get(),))
 
 
-window.mainloop()
+            row=cur.fetchone()
+
+            if row!=None:
+
+                messagebox.showerror("Error"
+
+               ,"User already Exist,Please try with another Email"
+
+                                    ,parent=self.root)
+
+                self.regclear()
+
+                self.entry.focus()
+
+            else:
+
+                cur.execute("INSERT INTO loginDet Values(?,?,?,?,?,?,?,?)",(self.entry6.get(),self.entry5.get(),self.entry7.get(),self.entry8.get(),self.entry9.get(),self.entry3.get(),self.entry.get(),self.entry2.get()))
+
+                conn.commit()
+
+                conn.close()
+
+                messagebox.showinfo("Success","Register Succesfull"
+
+                                   ,parent=self.root)
+
+                self.regclear()
+
+            
+
+
+
+    def appscreen(self):
+        pass
+
+
+
+    def regclear(self):
+
+      self.entry.delete(0,END)
+
+      self.entry2.delete(0,END)
+
+      self.entry3.delete(0,END)
+
+      self.entry4.delete(0,END)
+      self.entry5.delete(0,END)
+      self.entry6.delete(0,END)
+      self.entry7.delete(0,END)
+      self.entry8.delete(0,END)
+      self.entry9.delete(0,END)
+
+
+
+    def loginclear(self):
+
+      self.email_txt.delete(0,END)
+
+      self.password.delete(0,END)
+      
+def main():
+    
+    root=Tk()
+
+    obj=Login(root)
+
+    root.mainloop()
+
+if __name__=="__main__":
+    
+    main()
