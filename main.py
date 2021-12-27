@@ -27,7 +27,7 @@ class Login(object):
 
       
 
-        self.img=ImageTk.PhotoImage(file="D:\\VS PYTHON\\Cruder Accounter\\bg.jpg")
+        self.img=ImageTk.PhotoImage(file="bg.jpg")
 
         img=Label(Frame_login,image=self.img).place(x=0,y=0,width=1366,height=700)
 
@@ -121,7 +121,7 @@ class Login(object):
 
       
 
-        self.img=ImageTk.PhotoImage(file="D:\\VS PYTHON\\Cruder Accounter\\bg.jpg")
+        self.img=ImageTk.PhotoImage(file="bg.jpg")
 
         img=Label(Frame_login1,image=self.img).place(x=0,y=0,width=1366,height=700)
 
