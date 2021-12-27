@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk
 from tkinter import messagebox
 import sqlite3
+from menu import menuOptions
 
 class Login(object):
     def __init__(self,root):
@@ -14,6 +15,7 @@ class Login(object):
         
 
         self.root.resizable(False,False)
+        self.count=0
 
         self.loginform()
     
@@ -57,33 +59,25 @@ class Login(object):
 
         label3.place(x=30,y=195)
 
-        self.password=Entry(frame_input,font=("times new roman",15,"bold"),bg='lightgray')
+        self.password=Entry(frame_input,font=("times new roman",15,"bold"),bg='lightgray',show="*")
 
         self.password.place(x=30,y=245,width=270,height=35)
 
    
 
-        btn1=Button(frame_input,text="forgot password?",cursor='hand2',
+        self.btn1=Button(frame_input,text="Show Password",cursor='hand2',font=('calibri',10),bg='white',fg='black',bd=0,command=self.show_pass)
 
-                  font=('calibri',10),bg='white',fg='black',bd=0)
-
-        btn1.place(x=125,y=305)
+        self.btn1.place(x=125,y=305)
 
 
 
-        btn2=Button(frame_input,text="Login",command=self.login,cursor="hand2",
-
-                  font=("times new roman",15),fg="white",bg="orangered",
-
-                  bd=0,width=15,height=1)
+        btn2=Button(frame_input,text="Login",command=self.login,cursor="hand2",font=("times new roman",15),fg="white",bg="orangered", bd=0,width=15,height=1)
 
         btn2.place(x=90,y=340)
 
         
 
-        btn3=Button(frame_input,command=self.Register,text="Not Registered?register"
-
-                  ,cursor="hand2",font=("calibri",10),bg='white',fg="black",bd=0)
+        btn3=Button(frame_input,command=self.Register,text="Not Registered?register",cursor="hand2",font=("calibri",10),bg='white',fg="black",bd=0)
 
         btn3.place(x=110,y=390)
 
@@ -159,113 +153,75 @@ class Login(object):
 
         label3.place(x=30,y=195)
 
-        self.entry2=Entry(frame_input2,font=("times new roman",15,"bold"),
-
-                        bg='lightgray')
+        self.entry2=Entry(frame_input2,font=("times new roman",15,"bold"),bg='lightgray',show="*")
 
         self.entry2.place(x=30,y=245,width=270,height=35)
 
 
 
-        label4=Label(frame_input2,text="Email-id",font=("Goudy old style",20,"bold"),
-
-                   fg='orangered',bg='white')
+        label4=Label(frame_input2,text="Email-id",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
         label4.place(x=330,y=95)
 
-        self.entry3=Entry(frame_input2,font=("times new roman",15,"bold"),
-
-                       bg='lightgray')
+        self.entry3=Entry(frame_input2,font=("times new roman",15,"bold"),bg='lightgray')
 
         self.entry3.place(x=330,y=145,width=270,height=35)
 
 
 
-        label5=Label(frame_input2,text="Confirm Password",
-
-                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+        label5=Label(frame_input2,text="Confirm Password",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
         label5.place(x=330,y=195)
 
-        self.entry4=Entry(frame_input2,font=("times new roman",15,"bold"),
-
-                       bg='lightgray')
+        self.entry4=Entry(frame_input2,font=("times new roman",15,"bold"), bg='lightgray',show="*")
 
         self.entry4.place(x=330,y=245,width=270,height=35)
-        label6=Label(frame_input2,text="Company Name",
-
-                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+        label6=Label(frame_input2,text="Company Name",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
         label6.place(x=630,y=95)
 
-        self.entry5=Entry(frame_input2,font=("times new roman",15,"bold"),
-
-                       bg='lightgray')
+        self.entry5=Entry(frame_input2,font=("times new roman",15,"bold"), bg='lightgray')
 
         self.entry5.place(x=630,y=145,width=270,height=35)
-        label7=Label(frame_input2,text="Petrol Pump Name",
-
-                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+        label7=Label(frame_input2,text="Petrol Pump Name",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
         label7.place(x=630,y=195)
 
-        self.entry6=Entry(frame_input2,font=("times new roman",15,"bold"),
-
-                       bg='lightgray')
+        self.entry6=Entry(frame_input2,font=("times new roman",15,"bold"),bg='lightgray')
 
         self.entry6.place(x=630,y=245,width=270,height=35)
-        label8=Label(frame_input2,text="Owner Name",
-
-                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+        label8=Label(frame_input2,text="Owner Name", font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
         label8.place(x=30,y=295)
 
-        self.entry7=Entry(frame_input2,font=("times new roman",15,"bold"),
-
-                       bg='lightgray')
+        self.entry7=Entry(frame_input2,font=("times new roman",15,"bold"), bg='lightgray')
 
         self.entry7.place(x=30,y=345,width=270,height=35)
-        label9=Label(frame_input2,text="City",
-
-                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+        label9=Label(frame_input2,text="City", font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
         label9.place(x=330,y=295)
 
-        self.entry8=Entry(frame_input2,font=("times new roman",15,"bold"),
-
-                       bg='lightgray')
+        self.entry8=Entry(frame_input2,font=("times new roman",15,"bold"), bg='lightgray')
 
         self.entry8.place(x=330,y=345,width=270,height=35)
         no_of_nozzles=IntVar()
-        label10=Label(frame_input2,text="No of Nozzles",
-
-                   font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+        label10=Label(frame_input2,text="No of Nozzles",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
 
         label10.place(x=630,y=295)
 
-        self.entry9=Entry(frame_input2,textvariable=no_of_nozzles,font=("times new roman",15,"bold"),
-
-                       bg='lightgray')
+        self.entry9=Entry(frame_input2,textvariable=no_of_nozzles,font=("times new roman",15,"bold"),bg='lightgray')
 
         self.entry9.place(x=630,y=345,width=270,height=35)
 
 
 
-        btn2=Button(frame_input2,command=self.register,text="Register"
-
-                  ,cursor="hand2",font=("times new roman",15),fg="white",
-
-                  bg="orangered",bd=0,width=15,height=1)
+        btn2=Button(frame_input2,command=self.register,text="Register",cursor="hand2",font=("times new roman",15),fg="white", bg="orangered",bd=0,width=15,height=1)
 
         btn2.place(x=390,y=430)
 
         
 
-        btn3=Button(frame_input2,command=self.loginform,
-
-                  text="Already Registered?Login",cursor="hand2",
-
-                  font=("calibri",10),bg='white',fg="black",bd=0)
+        btn3=Button(frame_input2,command=self.loginform,text="Already Registered?Login",cursor="hand2",font=("calibri",10),bg='white',fg="black",bd=0)
 
         btn3.place(x=400,y=470)
 
@@ -275,15 +231,13 @@ class Login(object):
 
     def register(self):
 
-        if self.entry.get()==""or self.entry2.get()==""or self.entry3.get()==""or self.entry4.get()=="" or self.entry5.get()=="" or self.entry6.get()=="" or self.entry7.get()=="" or self.entry8.get()=="" or self.entry9.get()=="":
+        if self.entry.get()==""or self.entry2.get()==""or self.entry3.get()==""or self.entry4.get()=="" or self.entry5.get()=="" or self.entry6.get()=="" or self.entry7.get()=="" or self.entry8.get()=="" or self.entry9.get()=="" or self.entry9.get()==0:
 
             messagebox.showerror("Error","All Fields Are Required",parent=self.root)
 
         elif self.entry2.get()!=self.entry4.get():
 
-            messagebox.showerror("Error","Password and Confirm Password Should Be Same"
-
-                              ,parent=self.root)
+            messagebox.showerror("Error","Password and Confirm Password Should Be Same",parent=self.root)
 
         else:
 
@@ -291,8 +245,6 @@ class Login(object):
 
             cur=conn.cursor()
             cur.execute("CREATE TABLE IF NOT EXISTS loginDet(petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text primary key, password text)")
-            
-
             cur.execute("select * from loginDet where username=?",(self.entry.get(),))
 
 
@@ -300,11 +252,7 @@ class Login(object):
 
             if row!=None:
 
-                messagebox.showerror("Error"
-
-               ,"User already Exist,Please try with another Email"
-
-                                    ,parent=self.root)
+                messagebox.showerror("Error","User already Exist,Please try with another Email" ,parent=self.root)
 
                 self.regclear()
 
@@ -318,9 +266,7 @@ class Login(object):
 
                 conn.close()
 
-                messagebox.showinfo("Success","Register Succesfull"
-
-                                   ,parent=self.root)
+                messagebox.showinfo("Success","Register Succesfull",parent=self.root)
 
                 self.regclear()
 
@@ -329,7 +275,8 @@ class Login(object):
 
 
     def appscreen(self):
-        pass
+        self.password.delete(0,END)
+        app=menuOptions(self.email_txt.get())
 
 
 
@@ -355,6 +302,15 @@ class Login(object):
       self.email_txt.delete(0,END)
 
       self.password.delete(0,END)
+      
+    def show_pass(self):
+        self.count+=1
+        if self.count%2==0:
+            self.password.config(show="*")
+            self.btn1.config(text="Show Password")
+        else:
+            self.password.config(show="")
+            self.btn1.config(text="Hide Password")
       
 def main():
     
