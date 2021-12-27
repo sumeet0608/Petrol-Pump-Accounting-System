@@ -17,7 +17,7 @@ class menuOptions(Toplevel):
         Frame_login=Frame(self,bg="white")
         Frame_login.place(x=0,y=0,height=700,width=1366)
 
-        self.img=ImageTk.PhotoImage(file="C:\\Users\\SAM\\OneDrive\\Desktop\\transbg.png")
+        self.img=ImageTk.PhotoImage(file="transbg.png")
         img=Label(Frame_login,image=self.img).place(x=0,y=0,width=1366,height=700)
 
         frame_input=Frame(self)
