@@ -3,6 +3,8 @@ from PIL import ImageTk
 from tkinter import messagebox as mb
 from MSR import metreSR
 from densityCalc import densityCalculator
+from dsr import Daily_sales_record
+from makeBill import MakeBill
 
 class menuOptions(Toplevel):
     def __init__(self,username):
@@ -17,7 +19,7 @@ class menuOptions(Toplevel):
         Frame_login=Frame(self,bg="white")
         Frame_login.place(x=0,y=0,height=700,width=1366)
 
-        self.img=ImageTk.PhotoImage(file="transbg.png")
+        self.img=ImageTk.PhotoImage(file="D:\\VS PYTHON\\Cruder Accounter\\transbg.png")
         img=Label(Frame_login,image=self.img).place(x=0,y=0,width=1366,height=700)
 
         frame_input=Frame(self)
@@ -33,10 +35,10 @@ class menuOptions(Toplevel):
         btn2=Button(frame_input,command=self.den_calc,text="Density Calc",cursor="hand2",font=("times new roman",15),fg="white", bg="#7380aa",bd=0,width=17,height=1)
         btn2.place(x=85,y=180)
         
-        btn3=Button(frame_input,command=self.meter_reading,text="DSR Calulator",cursor="hand2",font=("times new roman",15),fg="white", bg="#7380aa",bd=0,width=17,height=1)
+        btn3=Button(frame_input,command=self.dsr_calc,text="DSR Calulator",cursor="hand2",font=("times new roman",15),fg="white", bg="#7380aa",bd=0,width=17,height=1)
         btn3.place(x=85,y=230)
         
-        btn4=Button(frame_input,command=self.meter_reading,text="Make a Bill",cursor="hand2",font=("times new roman",15),fg="white", bg="#7380aa",bd=0,width=17,height=1)
+        btn4=Button(frame_input,command=self.bill_make,text="Make a Bill",cursor="hand2",font=("times new roman",15),fg="white", bg="#7380aa",bd=0,width=17,height=1)
         btn4.place(x=85,y=290)
         
         btn5=Button(frame_input,command=self.onClick,text="Exit",cursor="hand2",font=("times new roman",15),fg="white", bg="#7380aa",bd=0,width=17,height=1)
@@ -47,6 +49,12 @@ class menuOptions(Toplevel):
         
     def den_calc(self):
         density=densityCalculator()
+    
+    def dsr_calc(self):
+        dsr=Daily_sales_record()
+        
+    def bill_make(self):
+        bill=MakeBill()
     
     def onClick(self):
         self.destroy()

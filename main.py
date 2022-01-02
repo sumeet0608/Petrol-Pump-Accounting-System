@@ -27,7 +27,7 @@ class Login(object):
 
       
 
-        self.img=ImageTk.PhotoImage(file="bg.jpg")
+        self.img=ImageTk.PhotoImage(file="D:\\VS PYTHON\\Cruder Accounter\\bg.jpg")
 
         img=Label(Frame_login,image=self.img).place(x=0,y=0,width=1366,height=700)
 
@@ -121,7 +121,7 @@ class Login(object):
 
       
 
-        self.img=ImageTk.PhotoImage(file="bg.jpg")
+        self.img=ImageTk.PhotoImage(file="D:\\VS PYTHON\\Cruder Accounter\\bg.jpg")
 
         img=Label(Frame_login1,image=self.img).place(x=0,y=0,width=1366,height=700)
 
@@ -242,7 +242,6 @@ class Login(object):
         else:
 
             conn=sqlite3.connect("login.db")
-
             cur=conn.cursor()
             cur.execute("CREATE TABLE IF NOT EXISTS loginDet(petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text primary key, password text)")
             cur.execute("select * from loginDet where username=?",(self.entry.get(),))
