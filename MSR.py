@@ -3,6 +3,8 @@ from PIL import ImageTk
 from tkinter import messagebox
 import sqlite3
 
+conn=sqlite3.connect("PetrolBunk.db")
+curr=conn.cursor()
 class metreSR(Toplevel):
     def __init__(self,username):
         Toplevel.__init__(self)
@@ -10,6 +12,7 @@ class metreSR(Toplevel):
         self.geometry("1366x700+0+0")
         self.username=username
         self.resizable(False,False)
+        self.salesTotal=0
         self.msr()
     
     def msr(self):
@@ -24,9 +27,8 @@ class metreSR(Toplevel):
         
         self.nozzleNo=1
         
-        conn=sqlite3.connect("login.db")
-        curr=conn.cursor()
-        curr.execute("SELECT * FROM loginDet WHERE username=?",(self.username,))
+        
+        curr.execute("SELECT * FROM loginDetails WHERE username=?",(self.username,))
         row=curr.fetchone()
         row=list(row)
         self.nozzles=row[4]
@@ -41,9 +43,9 @@ class metreSR(Toplevel):
         self.variable.set(fuels[0])
         self.label3=Label(self.frame_input,text=self.variable.get()+" price",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
         self.entry1=Entry(self.frame_input,font=("times new roman",15,"bold"),bg='lightgray')
-        
+        self.lastend=StringVar()
         self.label4=Label(self.frame_input,text="Start metre",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
-        self.entry2=Entry(self.frame_input,font=("times new roman",15,"bold"),bg='lightgray')
+        self.entry2=Entry(self.frame_input,font=("times new roman",15,"bold"),bg='lightgray',textvariable=self.lastend)
         
         self.label5=Label(self.frame_input,text="End metre",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
         self.entry3=Entry(self.frame_input,font=("times new roman",15,"bold"),bg='lightgray')
@@ -51,16 +53,21 @@ class metreSR(Toplevel):
         self.label6=Label(self.frame_input,text="Total Sale",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
         self.entry4=Entry(self.frame_input,font=("times new roman",15,"bold"),bg='lightgray',textvariable=self.sales,state='readonly')
         
+        self.lastSale=StringVar()
+        self.label7=Label(self.frame_input,text="Total Sales for the day",font=("Goudy old style",20,"bold"),fg='orangered',bg='white')
+        self.entry5=Entry(self.frame_input,font=("times new roman",15,"bold"),bg='lightgray',textvariable=self.lastSale,state='readonly')
+        
         self.btn1=Button(self.frame_input,command=self.salesPerNoz,text="Calculate",cursor="hand2",font=("times new roman",15),fg="white", bg="orangered",bd=0,width=17,height=1)
         self.btn2=Button(self.frame_input,command=self.nextNoz,text="Next Nozzle",cursor="hand2",font=("times new roman",15),fg="white", bg="orangered",bd=0,width=17,height=1)
         self.btn3=Button(self.frame_input,command=self.totalSales,text="Compute Total Sales",cursor="hand2",font=("times new roman",15),fg="white", bg="orangered",bd=0,width=17,height=1)
         self.btn4=Button(self.frame_input,command=self.goBack,text="Back",cursor="hand2",font=("times new roman",15),fg="white", bg="orangered",bd=0,width=17,height=1)
-        self.btn4.place(x=30,y=435)
+        self.btn4.place(x=270,y=435)
+        self.btn5=Button(self.frame_input,command=self.saveDetails,text="Save",cursor="hand2",font=("times new roman",15),fg="white", bg="orangered",bd=0,width=17,height=1)
         
-        dropdown = OptionMenu(self.frame_input, self.variable, *fuels,command=self.display_selected)
-        dropdown.pack(expand=True)
-        dropdown.place(x=300,y=85,width=270,height=35)
-        dropdown.config(bg='orangered',fg="white",font=("times new roman",15,"bold"))
+        self.dropdown = OptionMenu(self.frame_input, self.variable, *fuels,command=self.display_selected)
+        self.dropdown.pack(expand=True)
+        self.dropdown.place(x=300,y=85,width=270,height=35)
+        self.dropdown.config(bg='orangered',fg="white",font=("times new roman",15,"bold"))
         
     def display_selected(self,choice):
         choice = self.variable.get()
@@ -81,7 +88,14 @@ class metreSR(Toplevel):
         self.label6.place(x=30,y=365)
         self.entry4.place(x=300,y=365,width=270,height=35)
         self.btn1.place(x=630,y=365)
-        self.btn2.place(x=350,y=435)
+        self.btn2.place(x=630,y=225)
+        self.btn5.place(x=630,y=295)
+        last_row=curr.execute("SELECT * FROM Nozzle"+str(self.nozzleNo)+" ORDER BY end_meter DESC LIMIT 1").fetchone()
+        last_row=list(last_row)
+        self.lastend.set(last_row[1])
+        if(self.nozzleNo==self.nozzles):
+                self.btn2.place_forget()
+                self.btn3.place(x=630,y=225)
         
     def salesPerNoz(self):
         if self.entry3.get()=='' or self.entry2.get()=='' or self.entry1.get()=='':
@@ -89,32 +103,67 @@ class metreSR(Toplevel):
         else:
             total_sale=(int(self.entry3.get())-int(self.entry2.get()))*int(self.entry1.get())
             self.sales.set(total_sale)
+            self.salesTotal+=total_sale
     
     def nextNoz(self):
-        if self.entry3.get()=='' or self.entry2.get()=='' or self.entry1.get()=='':
+        if self.entry3.get()=='' or self.entry2.get()=='' or self.entry1.get()=='' or self.entry4.get()=='':
             messagebox.showerror("Error","Please fill all the fields")
         elif self.nozzleNo<self.nozzles:
             self.nozzleNo+=1
             self.entry1.delete(0,END)
             self.entry2.delete(0,END)
             self.entry3.delete(0,END)
+            self.entry4.config(state='normal')
             self.entry4.delete(0,END)
+            self.entry4.config(state='readonly')
             self.label1.config(text="Enter input for nozzle "+str(self.nozzleNo))
             self.label1.place(x=30,y=25)
             self.label2.place(x=30,y=85)
-            self.label3.place(x=30,y=155)
-            self.label4.place(x=30,y=225)
-            self.label5.place(x=30,y=295)
-            self.label6.place(x=30,y=365)
-            self.entry1.place(x=300,y=155,width=270,height=35)
-            self.entry2.place(x=300,y=225,width=270,height=35)
-            self.entry3.place(x=300,y=295,width=270,height=35)
-            self.entry4.place(x=300,y=365,width=270,height=35)
-            self.btn1.place(x=630,y=365)
-            self.btn2.place(x=350,y=435)
+            self.label3.place_forget()
+            self.label4.place_forget()
+            self.label5.place_forget()
+            self.label6.place_forget()
+            self.entry1.place_forget()
+            self.entry2.place_forget()
+            self.entry3.place_forget()
+            self.entry4.place_forget()
+            self.btn1.place_forget()
+            self.btn2.place_forget()
+            self.btn5.place_forget()
+            
+            
+    def saveDetails(self):
+        if self.entry3.get()=='' or self.entry2.get()=='' or self.entry1.get()=='' or self.entry4.get()=='':
+            messagebox.showerror("Error","Please fill all the fields")
+        else:
+            start_meter=self.entry2.get();
+            end_meter=self.entry3.get();
+            total_sale=self.entry4.get();
+            curr.execute("CREATE TABLE IF NOT EXISTS Nozzle"+str(self.nozzleNo)+" (start_meter INTEGER,end_meter INTEGER,total_sale INTEGER)")
+            curr.execute("INSERT INTO Nozzle"+str(self.nozzleNo)+" values(?,?,?)",(start_meter,end_meter,total_sale))
+            conn.commit()
             
     def totalSales(self):
-        pass
+        self.label1.place_forget()
+        self.label2.place_forget()
+        self.label3.place_forget()
+        self.label4.place_forget()
+        self.label5.place_forget()
+        self.label6.place_forget()
+        self.dropdown.place_forget()
+        self.entry1.place_forget()
+        self.entry2.place_forget()
+        self.entry3.place_forget()
+        self.entry4.place_forget()
+        self.btn1.place_forget()
+        self.btn2.place_forget()
+        self.btn5.place_forget()
+        self.btn3.place_forget()
+        self.btn4.place(x=270,y=350)
+        self.label7.place(x=80,y=200)
+        self.entry5.place(x=390,y=200,width=270,height=35)
+        self.lastSale.set(self.salesTotal)
+        
     
     def goBack(self):
         self.destroy()

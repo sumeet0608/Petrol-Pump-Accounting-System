@@ -90,9 +90,9 @@ class Login(object):
             messagebox.showerror("Error","All fields are required",parent=self.root)
 
         else:
-            conn=sqlite3.connect("login.db")
+            conn=sqlite3.connect("PetrolBunk.db")
             curr=conn.cursor()
-            curr.execute("SELECT * FROM loginDet WHERE username=? AND password=?",(self.email_txt.get(),self.password.get()))
+            curr.execute("SELECT * FROM loginDetails WHERE username=? AND password=?",(self.email_txt.get(),self.password.get()))
 
             row=curr.fetchone()
 
@@ -241,10 +241,10 @@ class Login(object):
 
         else:
 
-            conn=sqlite3.connect("login.db")
+            conn=sqlite3.connect("PetrolBunk.db")
             cur=conn.cursor()
-            cur.execute("CREATE TABLE IF NOT EXISTS loginDet(petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text primary key, password text)")
-            cur.execute("select * from loginDet where username=?",(self.entry.get(),))
+            cur.execute("CREATE TABLE IF NOT EXISTS loginDetails(petrolpumpname text, companyname text, ownername text, city text, noOfNozzles INTEGER,email text, username text primary key, password text)")
+            cur.execute("select * from loginDetails where username=?",(self.entry.get(),))
 
 
             row=cur.fetchone()
@@ -259,7 +259,7 @@ class Login(object):
 
             else:
 
-                cur.execute("INSERT INTO loginDet Values(?,?,?,?,?,?,?,?)",(self.entry6.get(),self.entry5.get(),self.entry7.get(),self.entry8.get(),self.entry9.get(),self.entry3.get(),self.entry.get(),self.entry2.get()))
+                cur.execute("INSERT INTO loginDetails Values(?,?,?,?,?,?,?,?)",(self.entry6.get(),self.entry5.get(),self.entry7.get(),self.entry8.get(),self.entry9.get(),self.entry3.get(),self.entry.get(),self.entry2.get()))
 
                 conn.commit()
 

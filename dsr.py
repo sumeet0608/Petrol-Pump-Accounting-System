@@ -84,7 +84,7 @@ class Daily_sales_record(Toplevel):
 
         else:
 
-            conn=sqlite3.connect("Daily_Sales_Record.db")
+            conn=sqlite3.connect("PetrolBunk.db")
 
             cur=conn.cursor()
             cur.execute("CREATE TABLE IF NOT EXISTS DSR(Date text, opening_stock INTEGER, sales_by_meter INTEGER, sales_by_dip INTEGER, tank_sale INTEGER, variance INTEGER)")
