@@ -39,7 +39,7 @@ class PrintBill(Toplevel):
         self.txt.insert(END,"\n===========================================")
         self.txt.insert(END,"\nVehicle No.          Litre(s)         Total")
         self.txt.insert(END,"\n===========================================")
-        self.txt.insert(END,f"\n{str(self.vehicleNO)}          {str(self.litres)}            {self.amount}")
+        self.txt.insert(END,f"\n{str(self.vehicleNO)}          {str(round(self.litres,2))}            {self.amount}")
         self.txt.insert(END,"\n===========================================")
         self.txt.insert(END,f"\n                       Total : ₹{self.amount}\n\n")
         self.txt.insert(END,"\n         Thank you for visiting...")
